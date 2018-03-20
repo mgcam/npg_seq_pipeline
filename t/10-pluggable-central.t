@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use Test::More tests => 15;
 use Test::Exception;
-use Cwd qw/getcwd/;
+use Cwd qw(getcwd);
 use Log::Log4perl qw(:levels);
 
 use npg_tracking::util::abs_path qw(abs_path);
@@ -21,19 +21,6 @@ Log::Log4perl->easy_init({layout => '%d %-5p %c - %m%n',
                           utf8   => 1});
 
 local $ENV{NPG_WEBSERVICE_CACHE_DIR} = q[t/data];
-local $ENV{TEST_FS_RESOURCE} = q{nfs_12};
-
-#my $java = join q[/], $tdir, 'java';
-#foreach my $tool (($sp, $java)) {
-#  `touch $tool`;
-#  `chmod +x $tool`;
-#}
-
-local $ENV{PATH} = join q[:],
-                   #$tdir,
-                   qq[$cwd/t/bin],
-                   qq[$cwd/t/bin/software/solexa/bin],
-                   $ENV{PATH};
 
 my $central = q{npg_pipeline::pluggable::central};
 use_ok($central);
@@ -72,11 +59,12 @@ my $runfolder_path = $util->analysis_runfolder_path();
   $util->set_staging_analysis_area();
   my $init = {
       function_order => [qw{qc_qX_yield qc_adapter update_warehouse qc_insert_size}],
-      lanes => [4],
+      lanes          => [4],
       runfolder_path => $runfolder_path,
-      no_bsub => 1,
-      repository => 't/data/sequence',
-      spider  => 0,
+      no_bsub        => 1,
+      repository     => 't/data/sequence',
+      spider         => 0,
+      no_sf_resource => 1,
   };
  
   lives_ok { $pb = $central->new($init); } q{no croak on new creation};
