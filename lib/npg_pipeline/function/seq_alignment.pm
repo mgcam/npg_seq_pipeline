@@ -215,6 +215,7 @@ sub _alignment_command { ## no critic (Subroutines::ProhibitExcessComplexity)
     rpt                 => $name_root,
     phix_reference_genome_fasta => $self->phix_reference,
     alignment_filter_jar => $self->_AlignmentFilter_jar,
+    align_intfile_opt => 1,
   };
   my $p4_ops = {
     prune => [],
